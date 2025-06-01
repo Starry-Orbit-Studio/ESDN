@@ -1,7 +1,19 @@
-import type { LocaleConfig } from 'vuepress'
-import zhCN from './zh-CN.json'
+import zhHans from './zh-Hans.json'
 
-export default {
-  ['en-US']: zhCN,
-  ['zh-CN']: zhCN,
-} as LocaleConfig<Record<string, Record<string, string>>>
+const locales = {
+  default: zhHans,
+  ['zh-Hans']: zhHans,
+}
+
+export default (
+  key: keyof typeof locales.default.default,
+  type?: Exclude<keyof typeof locales.default, 'default'>,
+  lang?: Exclude<keyof typeof locales, 'default'>,
+): string | undefined => {
+  if (!key) return ''
+  const locale = locales[lang ?? 'default']
+  const strings = locale[type ?? 'default']
+
+  if (key in strings) return strings[key as keyof typeof strings]
+  if (key in locale.default) return locale.default[key]
+}

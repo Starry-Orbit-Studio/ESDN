@@ -1,3 +1,4 @@
-declare const __ESDNUnitDoc: Readonly<import('./types').UnitDocSource> & {
-  prefix: `${string}/`
+declare const __ESDNUnitDoc: {
+  options: UnitDoc.Options
+  source: UnitDoc.Source
 }

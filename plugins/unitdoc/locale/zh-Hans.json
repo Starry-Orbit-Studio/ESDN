@@ -1,8 +1,9 @@
 {
   "default": {
     "UnitDoc": "Extreme Starry 单位文档",
+
     "none": "无",
-    "typeName": "未知类型",
+    "TypeName": "未知类型",
     "unknown": "未知单位 [{unit}]",
     "icon": "图标",
     "description": "介绍",
@@ -61,7 +62,7 @@
     "affectsOwner": "影响自己"
   },
   "InfantryTypes": {
-    "typeName": "步兵",
+    "TypeName": "步兵",
     "armor": "护甲",
     "strength": "护甲强度",
     "prerequisite": "训练前提",
@@ -69,27 +70,27 @@
     "buildLimit": "训练数量限制为 {buildLimit} 名"
   },
   "VehicleTypes": {
-    "typeName": "载具"
+    "TypeName": "载具"
   },
   "AircraftTypes": {
-    "typeName": "飞行器"
+    "TypeName": "飞行器"
   },
   "BuildingTypes": {
-    "typeName": "建筑物",
+    "TypeName": "建筑物",
     "prerequisite": "建造前提",
     "buildTimeMultiplier": "建造时间系数为 {buildTimeMultiplier}",
     "buildLimit": "建造数量限制为 {buildLimit} 座"
   },
   "SuperWeaponTypes": {
-    "typeName": "超级武器"
+    "TypeName": "超级武器"
   },
   "WeaponTypes": {
-    "typeName": "武器"
+    "TypeName": "武器"
   },
   "WarheadTypes": {
-    "typeName": "弹头"
+    "TypeName": "弹头"
   },
   "GenericPrerequisitesTypes": {
-    "typeName": "全局建造前提"
+    "TypeName": "全局建造前提"
   }
 }

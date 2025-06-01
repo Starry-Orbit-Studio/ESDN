@@ -1,14 +1,14 @@
 import { defineClientConfig } from 'vuepress/client'
-import UnitButton from './components/PublicUnitButton.vue'
-import UnitTypeCategory from './components/UnitTypeCategory.vue'
-import UnitLayout from './layouts/UnitLayout.vue'
+
+import UnitHomePageLayout from './layouts/UnitHomePageLayout.vue'
+import UnitTypeLayout from './layouts/UnitTypeLayout.vue'
 
 export default defineClientConfig({
   enhance({ app, router, siteData }) {
-    app.component('UnitButton', UnitButton)
-    app.component('UnitTypeCategory', UnitTypeCategory)
+    // app.component('UnitButton', UnitButton)
+    // app.component('UnitTypeCategory', UnitTypeCategory)
   },
   setup() {},
-  layouts: { UnitLayout },
+  layouts: { UnitHomePageLayout, UnitTypeLayout },
   rootComponents: [],
 })

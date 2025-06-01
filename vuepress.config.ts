@@ -1,5 +1,6 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defineUserConfig } from 'vuepress'
+import { path } from 'vuepress/utils'
 import ESDNGuide from './plugins/guide'
 import ESDNUnitDoc from './plugins/unitdoc'
 import head from './vuepress.head'
@@ -43,8 +44,9 @@ export default defineUserConfig({
     ESDNGuide({
       includes: ['/FAQ/', '/QuickStart/'],
     }),
-    ESDNUnitDoc(undefined as any, {
-      prefix: 'units/',
+    ESDNUnitDoc({
+      source: path.resolve(__dirname, 'units.json'),
+      baseUrl: '/units/',
     }),
   ],
 })

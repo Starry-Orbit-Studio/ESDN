@@ -20,14 +20,13 @@
 </template>
 
 <script lang="ts" setup>
-import Layout from 'vuepress-theme-hope/layouts/Layout.js'
+import Layout from 'vuepress-theme-hope/layouts/base/Layout.js'
 import { usePageFrontmatter } from 'vuepress/client'
-import { UnitId } from '../../types'
 import UnitDetailFooter from '../components/UnitDetailFooter.vue'
 import UnitDetailHeader from '../components/UnitDetailHeader.vue'
 
 const frontmatter = usePageFrontmatter<{
-  unitdoc: { id: UnitId }
+  unitdoc: { id: UnitDoc.Id }
 }>()
 
 // const init1 = () => {
