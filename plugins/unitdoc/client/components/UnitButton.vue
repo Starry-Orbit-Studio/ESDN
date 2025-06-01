@@ -1,15 +1,11 @@
 <template>
   <div class="unit-button">
     <RouterLink v-if="path" :to="path">
-      <UnitIcon
-        :unit="id"
-        :alt="alt"
-        @mouseenter="mouseenter"
-        @mouseleave="mouseleave" />
+      <UnitIcon :unit="id" @mouseenter="mouseenter" @mouseleave="mouseleave" />
     </RouterLink>
     <div
       v-else
-      v-text="i18n('unknown', undefined, locale.lang, { unit: alt ?? unit })" />
+      v-text="i18n('unknown', undefined, undefined, { unit: alt ?? unit })" />
     <!-- <div
       v-show="showDetail"
       class="unit-detail"
@@ -44,44 +40,42 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useSiteData, useSiteLocaleData } from 'vuepress/client'
-import { UnitId } from '../../types'
-import common from '../common'
+import i18n from '../../locale'
 import UnitIcon from './UnitIcon.vue'
 
-const { i18n } = common()
-const data = __ESDNUnitDoc
 const props = defineProps<{
-  unit: UnitId
+  unit: UnitDoc.Id
 }>()
 
-const siteData = useSiteData()
-const locale = useSiteLocaleData()
-const base = computed(() => {
-  const item = Object.entries(siteData.value.locales).find(
-    ([_, { lang }]) => locale.value.lang === lang,
-  )
-  return item?.[0] ?? '/'
-})
+const path = computed(() => {
+  let uri = __ESDNUnitDoc.options.baseUrl
 
-const unit = computed(() =>
-  __ESDNUnitDoc.units.find(i => i.unitId === props.unit),
-)
-const path = computed(() => base.value + data.prefix + unit.value?.esdnUri)
+  if (__ESDNUnitDoc.source.Units.InfantryTypes[props.unit]) uri += 'Infantry'
+  if (__ESDNUnitDoc.source.Units.VehicleTypes[props.unit]) uri += 'Vehicle'
+  if (__ESDNUnitDoc.source.Units.AircraftTypes[props.unit]) uri += 'Aircraft'
+  if (__ESDNUnitDoc.source.Units.BuildingTypes[props.unit]) uri += 'Building'
+  if (__ESDNUnitDoc.source.Units.SuperWeaponTypes[props.unit])
+    uri += 'SuperWeapon'
+  if (__ESDNUnitDoc.source.Warheads[props.unit]) uri += 'Warhead'
+  if (__ESDNUnitDoc.source.Weapons[props.unit]) uri += 'Weapon'
+
+  return uri + '/' + props.unit
+})
 /** 单位 (或 通用建造前提) */
 const id = computed(() => {
-  if (unit.value?.genericPrerequisites) {
-    return unit.value.genericPrerequisites[0]
-  } else {
-    return props.unit
-  }
+  // if (unitData.value?.genericPrerequisites) {
+  //   return unitData.value.genericPrerequisites[0]
+  // } else {
+  return props.unit
+  // }
 })
 const alt = computed(() => {
-  if (unit.value?.genericPrerequisites) {
-    return i18n('genericPrerequisites', undefined, locale.value.lang, {
-      unit: props.unit,
-    })
-  }
+  return props.unit
+  // if (unitData.value?.genericPrerequisites) {
+  //   return i18n('genericPrerequisites', undefined, undefined, {
+  //     unit: props.unit,
+  //   })
+  // }
 })
 
 onMounted(() => {})

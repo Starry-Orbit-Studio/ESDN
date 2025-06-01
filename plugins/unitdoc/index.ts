@@ -43,7 +43,7 @@ const plugin =
     const source = JSON.parse(raw) as UnitDoc.Source
 
     options.baseUrl ??= '/'
-    options.iconsBaseUrl ??= '/icons/'
+    options.iconsBaseUrl ??= '/units/'
     options.baseUrl = formatUrl(app.siteData.base + options.baseUrl) as any
     options.iconsBaseUrl = formatUrl(
       app.siteData.base + options.iconsBaseUrl,

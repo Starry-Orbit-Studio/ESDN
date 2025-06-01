@@ -10,32 +10,40 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useSiteLocaleData } from 'vuepress/client'
-import { UnitId } from '../../types'
-import common from '../common'
-
-const data = __ESDNUnitDoc
-
-const { csf, img } = common()
-const locale = useSiteLocaleData()
 
 const props = defineProps<{
-  unit: UnitId
+  unit: UnitDoc.Id
   elite?: boolean
   alt?: string
 }>()
 
-const unitData = computed(() => data.units.find(i => i.unitId === props.unit))
+const unitData = computed(() => {
+  return (
+    __ESDNUnitDoc.source.Units.InfantryTypes[props.unit] ??
+    __ESDNUnitDoc.source.Units.VehicleTypes[props.unit] ??
+    __ESDNUnitDoc.source.Units.AircraftTypes[props.unit] ??
+    __ESDNUnitDoc.source.Units.BuildingTypes[props.unit] ??
+    __ESDNUnitDoc.source.Units.SuperWeaponTypes[props.unit]
+  )
+})
+
+const img = (name: UnitDoc.ImageFileName) =>
+  `${__ESDNUnitDoc.options.iconsBaseUrl}${name}`
 
 const url = computed(() =>
-  props.elite ? unitData.value?.altCameo : unitData.value?.cameo,
+  props.elite ? unitData.value?.AltCameo : unitData.value?.Cameo,
 )
-const alt = computed(
-  () =>
-    props.alt ??
-    (csf(unitData.value?.uiName, locale.value.lang) ||
-      props.unit.toUpperCase()),
-)
+const alt = computed(() => {
+  if (props.alt) return props.alt
+
+  if (
+    unitData.value?.UIName &&
+    __ESDNUnitDoc.source.Csf[unitData.value?.UIName]
+  )
+    return __ESDNUnitDoc.source.Csf[unitData.value?.UIName]
+
+  return props.unit
+})
 </script>
 
 <style lang="scss">
