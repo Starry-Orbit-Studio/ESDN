@@ -3,3 +3,5 @@ node_modules/
 .temp/
 dist/
 pnpm-lock.yaml
+# 单位配置信息
+units.json

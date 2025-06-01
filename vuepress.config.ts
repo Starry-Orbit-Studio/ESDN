@@ -1,6 +1,7 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defineUserConfig } from 'vuepress'
 import ESDNGuide from './plugins/guide'
+import ESDNUnitDoc from './plugins/unitdoc'
 import head from './vuepress.head'
 import theme from './vuepress.theme'
 
@@ -12,6 +13,8 @@ export default defineUserConfig({
 
   base: '/',
   head,
+
+  lang: 'zh-CN',
 
   locales: {
     '/': {
@@ -39,6 +42,9 @@ export default defineUserConfig({
   plugins: [
     ESDNGuide({
       includes: ['/FAQ/', '/QuickStart/'],
+    }),
+    ESDNUnitDoc(undefined as any, {
+      prefix: 'units/',
     }),
   ],
 })

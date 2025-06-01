@@ -1,0 +1,52 @@
+<template>
+  <Layout :key="frontmatter.unitdoc?.id">
+    <template #contentBefore>
+      <div class="unitdoc-header">
+        <UnitDetailHeader
+          v-if="frontmatter.unitdoc?.id"
+          :unit="frontmatter.unitdoc?.id"
+          class="unit-detail theme-hope-content" />
+      </div>
+    </template>
+    <template #contentAfter>
+      <div class="unitdoc-footer">
+        <UnitDetailFooter
+          v-if="frontmatter.unitdoc?.id"
+          :unit="frontmatter.unitdoc?.id"
+          class="unit-detail theme-hope-content" />
+      </div>
+    </template>
+  </Layout>
+</template>
+
+<script lang="ts" setup>
+import { usePageFrontmatter } from '@vuepress/client'
+import Layout from 'vuepress-theme-hope/layouts/Layout.js'
+import { UnitId } from '../../types'
+import UnitDetailFooter from '../components/UnitDetailFooter.vue'
+import UnitDetailHeader from '../components/UnitDetailHeader.vue'
+
+const frontmatter = usePageFrontmatter<{
+  unitdoc: { id: UnitId }
+}>()
+
+// const init1 = () => {
+//   const sidebar = useSidebarItems()
+//   sidebar.value[0] = __ESDNUnitDocSidebar
+// }
+// onBeforeMount(init1)
+// onBeforeUpdate(init1)
+</script>
+
+<style lang="scss">
+.unitdoc-header,
+.unitdoc-footer {
+  .unit-detail {
+    margin: 0 auto;
+
+    table {
+      width: fit-content;
+    }
+  }
+}
+</style>
