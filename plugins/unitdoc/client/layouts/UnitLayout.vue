@@ -1,18 +1,18 @@
 <template>
-  <Layout :key="frontmatter.unitdoc?.id">
+  <Layout :key="frontmatter.unitId">
     <template #contentBefore>
       <div class="unitdoc-header">
         <UnitDetailHeader
-          v-if="frontmatter.unitdoc?.id"
-          :unit="frontmatter.unitdoc?.id"
+          v-if="frontmatter.unitId"
+          :unit="frontmatter.unitId"
           class="unit-detail theme-hope-content" />
       </div>
     </template>
     <template #contentAfter>
       <div class="unitdoc-footer">
         <UnitDetailFooter
-          v-if="frontmatter.unitdoc?.id"
-          :unit="frontmatter.unitdoc?.id"
+          v-if="frontmatter.unitId"
+          :unit="frontmatter.unitId"
           class="unit-detail theme-hope-content" />
       </div>
     </template>
@@ -26,7 +26,8 @@ import UnitDetailFooter from '../components/UnitDetailFooter.vue'
 import UnitDetailHeader from '../components/UnitDetailHeader.vue'
 
 const frontmatter = usePageFrontmatter<{
-  unitdoc: { id: UnitDoc.Id }
+  type: string
+  unitId: UnitDoc.Id
 }>()
 
 // const init1 = () => {

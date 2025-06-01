@@ -1,11 +1,11 @@
 <template>
   <div class="unit-button">
     <RouterLink v-if="path" :to="path">
-      <UnitIcon :unit="id" @mouseenter="mouseenter" @mouseleave="mouseleave" />
+      <UnitIcon :unit @mouseenter="mouseenter" @mouseleave="mouseleave" />
     </RouterLink>
     <div
       v-else
-      v-text="i18n('unknown', undefined, undefined, { unit: alt ?? unit })" />
+      v-text="i18n('Unknown', undefined, undefined, { unit: alt ?? unit })" />
     <!-- <div
       v-show="showDetail"
       class="unit-detail"
@@ -41,6 +41,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import i18n from '../../locale'
+import { getUnit } from '../utils'
 import UnitIcon from './UnitIcon.vue'
 
 const props = defineProps<{
@@ -48,26 +49,19 @@ const props = defineProps<{
 }>()
 
 const path = computed(() => {
-  let uri = __ESDNUnitDoc.options.baseUrl
+  const res = getUnit(props.unit)
 
-  if (__ESDNUnitDoc.source.Units.InfantryTypes[props.unit]) uri += 'Infantry'
-  if (__ESDNUnitDoc.source.Units.VehicleTypes[props.unit]) uri += 'Vehicle'
-  if (__ESDNUnitDoc.source.Units.AircraftTypes[props.unit]) uri += 'Aircraft'
-  if (__ESDNUnitDoc.source.Units.BuildingTypes[props.unit]) uri += 'Building'
-  if (__ESDNUnitDoc.source.Units.SuperWeaponTypes[props.unit])
-    uri += 'SuperWeapon'
-  if (__ESDNUnitDoc.source.Warheads[props.unit]) uri += 'Warhead'
-  if (__ESDNUnitDoc.source.Weapons[props.unit]) uri += 'Weapon'
+  let type = res?.type ?? '404'
+  type = type.endsWith('s') ? type.substring(0, type.length - 1) : type
+  type = type.endsWith('Type') ? type.substring(0, type.length - 4) : type
 
-  return uri + '/' + props.unit
-})
-/** 单位 (或 通用建造前提) */
-const id = computed(() => {
-  // if (unitData.value?.genericPrerequisites) {
-  //   return unitData.value.genericPrerequisites[0]
-  // } else {
-  return props.unit
-  // }
+  return (
+    __ESDNUnitDoc.options.baseUrl +
+    '/' +
+    type +
+    '/' +
+    props.unit
+  ).replaceAll('//', '/')
 })
 const alt = computed(() => {
   return props.unit

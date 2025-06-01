@@ -1,21 +1,28 @@
 <template>
-  <div v-if="unitData" class="unit-detail">
+  <div v-if="unitData?.data" class="unit-detail">
     <table>
       <thead>
         <tr>
           <th colspan="255">
-            {{ i18n('typeName', unitData.unitType, locale.lang, unitData) }}
+            {{ i18n('TypeName', unitData?.type, undefined, unitData?.data) }}
             :
-            {{ csf(unitData.uiName, locale.lang) || unitData.unitId }}
+            {{
+              (unitData?.data?.UIName &&
+                data.source.Csf[unitData?.data?.UIName]) ??
+              unit
+            }}
           </th>
         </tr>
-        <tr v-if="unitData.cameo || unitData.altCameo">
-          <th v-text="i18n('icon', unitData.unitType, locale.lang, unitData)" />
+        <tr v-if="unitData?.data.Cameo || unitData?.data.AltCameo">
+          <th
+            v-text="i18n('Icon', unitData?.type, undefined, unitData?.data)" />
           <td colspan="255">
-            <div class="unit-detail-icon" :class="{ elite: unitData.altCameo }">
+            <div
+              class="unit-detail-icon"
+              :class="{ elite: unitData?.data.AltCameo }">
               <UnitIcon :unit="unit" alt="普通" />
               <UnitIcon
-                v-if="unitData.altCameo"
+                v-if="unitData?.data.AltCameo"
                 :unit="unit"
                 alt="精英"
                 elite />
@@ -24,47 +31,51 @@
         </tr>
         <TRHelper
           :data="{
-            [i18n('description', unitData.unitType, locale.lang, unitData)]:
-              csf(unitData.uiDescription, locale.lang),
+            [i18n('Description', unitData?.type, undefined, unitData?.data) ??
+            '']: data.source.Csf[unitData?.data.UIDescription!],
           }" />
       </thead>
       <tbody>
         <TRHelper
           :data="{
-            [i18n('cost', unitData.unitType, locale.lang, unitData)]:
-              unitData.cost,
-            [i18n('power', unitData.unitType, locale.lang, unitData)]:
-              unitData.power,
+            [i18n('Cost', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Cost,
+            [i18n('Power', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Power,
           }" />
         <TRHelper
           :data="{
-            [i18n('strength', unitData.unitType, locale.lang, unitData)]:
-              unitData.strength,
-            [i18n('armor', unitData.unitType, locale.lang, unitData)]:
-              unitData.armor,
+            [i18n('Strength', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Strength,
+            [i18n('Armor', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Armor,
           }" />
         <TRHelper
           :data="{
-            [i18n('primary', unitData.unitType, locale.lang, unitData)]:
-              unitData.primary,
-            [i18n('elitePrimary', unitData.unitType, locale.lang, unitData)]:
-              unitData.elitePrimary,
+            [i18n('Primary', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Primary,
+            [i18n('ElitePrimary', unitData?.type, undefined, unitData?.data) ??
+            '']: unitData?.data.ElitePrimary,
           }"
           button />
         <TRHelper
           :data="{
-            [i18n('secondary', unitData.unitType, locale.lang, unitData)]:
-              unitData.secondary,
-            [i18n('eliteSecondary', unitData.unitType, locale.lang, unitData)]:
-              unitData.eliteSecondary,
+            [i18n('Secondary', unitData?.type, undefined, unitData?.data) ??
+            '']: unitData?.data.Secondary,
+            [i18n(
+              'EliteSecondary',
+              unitData?.type,
+              undefined,
+              unitData?.data,
+            ) ?? '']: unitData?.data.EliteSecondary,
           }"
           button />
-        <tr v-if="unitData.prerequisite?.length">
-          <th v-text="i18n('prerequisite', unitData.unitType, locale.lang)" />
+        <tr v-if="unitData?.data.Prerequisite?.length">
+          <th v-text="i18n('Prerequisite', unitData?.type, undefined)" />
           <td colspan="255">
             <div class="flex flex-row gap-2 justify-center">
               <UnitButton
-                v-for="(unit, index) in unitData.prerequisite"
+                v-for="(unit, index) in unitData?.data.Prerequisite"
                 :key="index"
                 :unit="unit" />
             </div>
@@ -72,70 +83,77 @@
         </tr>
         <TRHelper
           :data="{
-            [i18n('damage', unitData.unitType, locale.lang, unitData)]:
-              unitData.damage,
-            [i18n('rof', unitData.unitType, locale.lang, unitData)]:
-              unitData.rof,
-            [i18n('range', unitData.unitType, locale.lang, unitData)]:
-              unitData.range,
-            [i18n('burst', unitData.unitType, locale.lang, unitData)]:
-              unitData.burst,
-            [i18n('burstDelays', unitData.unitType, locale.lang, unitData)]:
-              unitData.burstDelays,
+            [i18n('Damage', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Damage,
+            [i18n('ROF', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.ROF,
+            [i18n('Range', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Range,
+            [i18n('Burst', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Burst,
+            [i18n('Burst_Delays', unitData?.type, undefined, unitData?.data) ??
+            '']: unitData?.data.Burst_Delays,
           }" />
         <TRHelper
           :data="{
-            [i18n('warhead', unitData.unitType, locale.lang, unitData)]:
-              unitData.warhead,
+            [i18n('Warhead', unitData?.type, undefined, unitData?.data) ?? '']:
+              unitData?.data.Warhead,
           }"
           button />
         <TRHelper
           :data="{
-            [i18n('cellSpread', unitData.unitType, locale.lang, unitData)]:
-              unitData.cellSpread,
-            [i18n('affectsAllies', unitData.unitType, locale.lang, unitData)]:
-              unitData.affectsAllies,
-            [i18n('affectsEnemies', unitData.unitType, locale.lang, unitData)]:
-              unitData.affectsEnemies,
-            [i18n('affectsOwner', unitData.unitType, locale.lang, unitData)]:
-              unitData.affectsOwner,
+            [i18n('CellSpread', unitData?.type, undefined, unitData?.data) ??
+            '']: unitData?.data.CellSpread,
+            [i18n('AffectsAllies', unitData?.type, undefined, unitData?.data) ??
+            '']: unitData?.data.AffectsAllies,
+            [i18n(
+              'AffectsEnemies',
+              unitData?.type,
+              undefined,
+              unitData?.data,
+            ) ?? '']: unitData?.data.AffectsEnemies,
+            [i18n('AffectsOwner', unitData?.type, undefined, unitData?.data) ??
+            '']: unitData?.data.AffectsOwner,
           }" />
       </tbody>
     </table>
-    <details v-if="unitData.damageModifiers">
+    <!-- <details v-if="unitData?.data.DamageModifiers">
       <summary
         v-text="
-          i18n('damageModifiers', unitData.unitType, locale.lang, unitData)
+          i18n('DamageModifiers', unitData?.type, undefined, unitData?.data)
         " />
 
       <table>
-        <tr v-for="(value, key) in unitData.damageModifiers" :key="key">
+        <tr v-for="(value, key) in unitData?.data.DamageModifiers" :key="key">
           <th v-text="key" />
           <td v-text="value" />
         </tr>
       </table>
-    </details>
+    </details> -->
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useSiteLocaleData } from 'vuepress/client'
-import { UnitId } from '../../types'
-import common from '../common'
+import i18n from '../../locale'
+import { getUnit } from '../utils'
 import UnitButton from './UnitButton.vue'
 import UnitIcon from './UnitIcon.vue'
 import TRHelper from './_TRHelper.vue'
 
 const data = __ESDNUnitDoc
 
-const { i18n, csf } = common()
-const locale = useSiteLocaleData()
 const props = defineProps<{
-  unit: UnitId
+  unit: UnitDoc.Id
 }>()
 
-const unitData = computed(() => data.units.find(i => i.unitId === props.unit))
+const unitData = computed(
+  () =>
+    getUnit(props.unit)! as {
+      type: UnitDoc.Type
+      data?: Partial<UnitDoc.Unit & UnitDoc.Weapon & UnitDoc.Warhead>
+    },
+)
 </script>
 
 <style lang="scss">

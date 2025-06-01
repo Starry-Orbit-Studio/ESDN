@@ -10,6 +10,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { getUnit } from '../utils'
 
 const props = defineProps<{
   unit: UnitDoc.Id
@@ -17,30 +18,21 @@ const props = defineProps<{
   alt?: string
 }>()
 
-const unitData = computed(() => {
-  return (
-    __ESDNUnitDoc.source.Units.InfantryTypes[props.unit] ??
-    __ESDNUnitDoc.source.Units.VehicleTypes[props.unit] ??
-    __ESDNUnitDoc.source.Units.AircraftTypes[props.unit] ??
-    __ESDNUnitDoc.source.Units.BuildingTypes[props.unit] ??
-    __ESDNUnitDoc.source.Units.SuperWeaponTypes[props.unit]
-  )
-})
+const unitData = computed(() => getUnit(props.unit))
 
 const img = (name: UnitDoc.ImageFileName) =>
   `${__ESDNUnitDoc.options.iconsBaseUrl}${name}`
 
-const url = computed(() =>
-  props.elite ? unitData.value?.AltCameo : unitData.value?.Cameo,
-)
+const url = computed(() => {
+  const data = unitData.value?.data as UnitDoc.Unit
+  return props.elite ? data?.AltCameo : data?.Cameo
+})
 const alt = computed(() => {
   if (props.alt) return props.alt
+  const data = unitData.value?.data as UnitDoc.Unit
 
-  if (
-    unitData.value?.UIName &&
-    __ESDNUnitDoc.source.Csf[unitData.value?.UIName]
-  )
-    return __ESDNUnitDoc.source.Csf[unitData.value?.UIName]
+  if (data?.UIName && __ESDNUnitDoc.source.Csf[data?.UIName])
+    return __ESDNUnitDoc.source.Csf[data?.UIName]
 
   return props.unit
 })

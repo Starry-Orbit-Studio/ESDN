@@ -29,12 +29,12 @@
         </li>
         <li>
           <RouterLink :to="`${baseUrl}Weapon/`">
-            {{ i18n('TypeName', 'WeaponTypes') }}
+            {{ i18n('TypeName', 'Weapons') }}
           </RouterLink>
         </li>
         <li>
           <RouterLink :to="`${baseUrl}Warhead/`">
-            {{ i18n('TypeName', 'WarheadTypes') }}
+            {{ i18n('TypeName', 'Warheads') }}
           </RouterLink>
         </li>
         <li>

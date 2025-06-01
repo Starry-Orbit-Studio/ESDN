@@ -19,7 +19,7 @@ const PageBuilder = {
   },
   IndexPage: async (
     app: App,
-    type: Exclude<Parameters<typeof i18n>[1], undefined>,
+    type: UnitDoc.Type,
     url: string,
     pageOptions: PageOptions,
   ) => {
@@ -30,6 +30,26 @@ const PageBuilder = {
     pageOptions.frontmatter.title ??= i18n('TypeName', type)
     pageOptions.frontmatter.layout = 'UnitTypeLayout'
     pageOptions.frontmatter.type = type
+
+    const page = await createPage(app, pageOptions)
+    app.pages.push(page)
+  },
+  UnitPage: async (
+    app: App,
+    type: UnitDoc.Type,
+    unitId: UnitDoc.Id,
+    title: string,
+    url: string,
+    pageOptions: PageOptions,
+  ) => {
+    pageOptions.path = url
+
+    pageOptions.frontmatter ??= {}
+
+    pageOptions.frontmatter.title ??= title
+    pageOptions.frontmatter.layout = 'UnitLayout'
+    pageOptions.frontmatter.type = type
+    pageOptions.frontmatter.unitId = unitId
 
     const page = await createPage(app, pageOptions)
     app.pages.push(page)
@@ -73,17 +93,23 @@ const plugin =
         )
 
         const types: Array<
-          | ['InfantryTypes', Record<UnitDoc.Id, UnitDoc.Unit>]
-          | ['VehicleTypes', Record<UnitDoc.Id, UnitDoc.Unit>]
-          | ['AircraftTypes', Record<UnitDoc.Id, UnitDoc.Unit>]
-          | ['BuildingTypes', Record<UnitDoc.Id, UnitDoc.Unit>]
-          | ['SuperWeaponTypes', Record<UnitDoc.Id, UnitDoc.Unit>]
-          | ['WeaponTypes', Record<UnitDoc.Id, UnitDoc.Weapon>]
-          | ['WarheadTypes', Record<UnitDoc.Id, UnitDoc.Warhead>]
+          | [UnitDoc.Type.InfantryTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
+          | [UnitDoc.Type.VehicleTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
+          | [UnitDoc.Type.AircraftTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
+          | [UnitDoc.Type.BuildingTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
+          | [UnitDoc.Type.SuperWeaponTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
+          | [UnitDoc.Type.Weapons, Record<UnitDoc.Id, UnitDoc.Weapon>]
+          | [UnitDoc.Type.Warheads, Record<UnitDoc.Id, UnitDoc.Warhead>]
         > = []
         types.push(...(Object.entries(__ESDNUnitDoc.source.Units) as any))
-        types.push(['WeaponTypes', __ESDNUnitDoc.source.Weapons])
-        types.push(['WarheadTypes', __ESDNUnitDoc.source.Warheads])
+        types.push([
+          'Weapons' as UnitDoc.Type.Weapons,
+          __ESDNUnitDoc.source.Weapons,
+        ])
+        types.push([
+          'Warheads' as UnitDoc.Type.Warheads,
+          __ESDNUnitDoc.source.Warheads,
+        ])
         // types.push([
         //   'GenericPrerequisitesTypes',
         //   __ESDNUnitDoc.source.GenericPrerequisites,
@@ -95,6 +121,28 @@ const plugin =
               `${relativeBaseUrl}/${type.replace('Types', '')}/`,
             )
             await PageBuilder.IndexPage(app, type, url, getPageOptions(url))
+
+            await Promise.all(
+              Object.entries(data).map(async ([unitId, unit]) => {
+                const unitUrl = formatUrl(`${url}${unitId}.html`)
+
+                const title =
+                  'UIName' in unit && unit.UIName
+                    ? __ESDNUnitDoc.source.Csf[unit.UIName]
+                    : unitId
+
+                console.log(unitUrl)
+
+                await PageBuilder.UnitPage(
+                  app,
+                  type,
+                  unitId,
+                  title ?? undefined,
+                  unitUrl,
+                  getPageOptions(unitUrl),
+                )
+              }),
+            )
           }),
         )
 

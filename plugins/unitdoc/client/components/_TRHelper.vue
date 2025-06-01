@@ -20,6 +20,6 @@ const props = defineProps<{
 const data = computed(() =>
   Object.entries(props.data)
     .map(([label, value]) => ({ label, value }))
-    .filter(i => i.value),
+    .filter(i => i.label && i.value),
 )
 </script>

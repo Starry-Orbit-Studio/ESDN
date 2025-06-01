@@ -14,19 +14,30 @@ declare namespace UnitDoc {
   /** Csf标签 */
   export type CsfLabel = string
 
+  export enum Type {
+    InfantryTypes = 'InfantryTypes',
+    VehicleTypes = 'VehicleTypes',
+    AircraftTypes = 'AircraftTypes',
+    BuildingTypes = 'BuildingTypes',
+    SuperWeaponTypes = 'SuperWeaponTypes',
+    Weapons = 'Weapons',
+    Warheads = 'Warheads',
+    Armors = 'Armors',
+  }
+
   /** 单位文档数据 */
   export interface Source {
-    Units: {
-      InfantryTypes: Record<Id, Unit>
-      VehicleTypes: Record<Id, Unit>
-      AircraftTypes: Record<Id, Unit>
-      BuildingTypes: Record<Id, Unit>
-      SuperWeaponTypes: Record<Id, Unit>
-    }
-    Weapons: Record<Id, Weapon>
-    Warheads: Record<Id, Warhead>
     Csf: Record<CsfLabel, string>
-    Armors: Id[]
+    Units: {
+      [Type.InfantryTypes]: Record<Id, Unit>
+      [Type.VehicleTypes]: Record<Id, Unit>
+      [Type.AircraftTypes]: Record<Id, Unit>
+      [Type.BuildingTypes]: Record<Id, Unit>
+      [Type.SuperWeaponTypes]: Record<Id, Unit>
+    }
+    [Type.Weapons]: Record<Id, Weapon>
+    [Type.Warheads]: Record<Id, Warhead>
+    [Type.Armors]: Id[]
   }
 
   export interface Unit {
@@ -62,7 +73,7 @@ declare namespace UnitDoc {
     ImmuneToRadiation?: boolean
     ImmuneToPoison?: boolean
     Ammo?: number
-    Deploysnumbero?: Id
+    DeploysInto?: Id
     Cloneable?: boolean
     Bunkerable?: boolean
     Trainable?: boolean
