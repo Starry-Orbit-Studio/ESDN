@@ -1,4 +1,4 @@
-import { defineClientConfig } from '@vuepress/client'
+import { defineClientConfig } from 'vuepress/client'
 import UnitButton from './components/PublicUnitButton.vue'
 import UnitTypeCategory from './components/UnitTypeCategory.vue'
 import UnitLayout from './layouts/UnitLayout.vue'

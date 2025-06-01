@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useSiteLocaleData } from '@vuepress/client'
 import { computed } from 'vue'
+import { useSiteLocaleData } from 'vuepress/client'
 import { UnitId } from '../../types'
 import common from '../common'
 

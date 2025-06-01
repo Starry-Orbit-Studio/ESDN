@@ -42,9 +42,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useSiteData, useSiteLocaleData } from '@vuepress/client'
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useSiteData, useSiteLocaleData } from 'vuepress/client'
 import { UnitId } from '../../types'
 import common from '../common'
 import UnitIcon from './UnitIcon.vue'

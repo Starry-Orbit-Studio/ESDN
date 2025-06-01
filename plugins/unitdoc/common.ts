@@ -1,4 +1,4 @@
-import { type SiteLocaleData } from '@vuepress/client'
+import { type SiteLocaleData } from 'vuepress/client'
 import locales from './locale'
 import type { CsfLabel, ImageFileName, UnitDocSource } from './types'
 

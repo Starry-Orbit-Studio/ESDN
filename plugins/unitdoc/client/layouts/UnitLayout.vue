@@ -20,8 +20,8 @@
 </template>
 
 <script lang="ts" setup>
-import { usePageFrontmatter } from '@vuepress/client'
 import Layout from 'vuepress-theme-hope/layouts/Layout.js'
+import { usePageFrontmatter } from 'vuepress/client'
 import { UnitId } from '../../types'
 import UnitDetailFooter from '../components/UnitDetailFooter.vue'
 import UnitDetailHeader from '../components/UnitDetailHeader.vue'

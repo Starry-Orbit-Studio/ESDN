@@ -1,4 +1,4 @@
-import type { PageOptions } from '@vuepress/core'
+import type { PageOptions } from 'vuepress/core'
 import type { UnitDocSource } from '../types'
 
 export const home = (

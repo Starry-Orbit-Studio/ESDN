@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useSiteLocaleData } from '@vuepress/client'
 import { RouterLink } from 'vue-router'
+import { useSiteLocaleData } from 'vuepress/client'
 import common from '../common'
 const data = Object.keys(__ESDNUnitDoc.indexes)
 const locale = useSiteLocaleData()
