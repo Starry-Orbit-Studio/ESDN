@@ -19,6 +19,13 @@ const props = defineProps<{
 
 const unitData = computed(() => __ESDNUnitDoc.source.Data[props.unit])
 
+const types = computed<UnitDoc.Types | undefined>(
+  () =>
+    Object.entries(__ESDNUnitDoc.source.Types).find(([_, v]) =>
+      v.includes(props.unit),
+    )?.[0] as UnitDoc.Types,
+)
+
 const icon = computed(() => {
   if (!unitData.value) return
 
@@ -26,6 +33,16 @@ const icon = computed(() => {
     return unitData.value.AltCameo
   if ('Cameo' in unitData.value) return unitData.value.Cameo
   if ('SidebarImage' in unitData.value) return unitData.value.SidebarImage
+  if (
+    [
+      'InfantryTypes',
+      'VehicleTypes',
+      'AircraftTypes',
+      'BuildingTypes',
+      'SuperWeaponTypes',
+    ].includes(types.value)
+  )
+    return 'xxicon.webp'
 })
 const alt = computed(() => {
   if (props.alt) return props.alt
@@ -55,6 +72,9 @@ figure.unit-icon {
     .title {
       width: unset;
       max-width: unset;
+    }
+    .image {
+      margin: auto;
     }
   }
 

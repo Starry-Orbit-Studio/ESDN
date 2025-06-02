@@ -36,6 +36,18 @@
       [i18n('Description', types, undefined, unitData) ?? '']:
         ESDNUnitDoc.source.Csf[unitData.UIDescription!],
     }" />
+  <tr v-if="hasProperty<UnitDoc.Unit>(unitData, 'TechLevel')">
+    <th v-text="i18n('TechLevel', types, undefined, unitData)" />
+    <td v-if="unitData.TechLevel === 0x4e445345" colspan="255">
+      <span class="tech-level-highlight">ESDN</span>
+    </td>
+    <td v-else-if="unitData.TechLevel === -0x4e445345" colspan="255">
+      <span class="tech-level-colorful">ESDN</span>
+    </td>
+    <td v-else colspan="255">
+      {{ unitData.TechLevel }}
+    </td>
+  </tr>
 </template>
 
 <script lang="ts" setup>
@@ -76,6 +88,31 @@ const unitData = computed(() => __ESDNUnitDoc.source.Data[props.unit])
 
   & > * {
     place-self: center;
+  }
+}
+.tech-level-highlight {
+  color: var(--vp-c-accent);
+}
+.tech-level-colorful {
+  color: transparent;
+  background-image: linear-gradient(
+    to right bottom,
+    #ff0000,
+    #00ff00,
+    #0000ff,
+    #00ff00,
+    #ff0000
+  );
+  background-clip: text;
+  background-size: 400% 100%;
+  animation: tech-level-highlight-animation 4s infinite linear;
+}
+@keyframes tech-level-highlight-animation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -400% 0;
   }
 }
 </style>

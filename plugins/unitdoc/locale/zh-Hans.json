@@ -17,6 +17,7 @@
     "Power": "电力",
     "Strength": "装甲强度",
     "Armor": "装甲",
+    "TechLevel": "科技等级",
     "Prerequisite": "生产前提",
     "Weapons": "武器 {i}",
     "EliteWeapons": "精英武器 {i}",
