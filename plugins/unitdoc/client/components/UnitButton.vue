@@ -1,7 +1,12 @@
 <template>
   <div class="unit-button">
     <RouterLink v-if="path" :to="path">
-      <UnitIcon :unit @mouseenter="mouseenter" @mouseleave="mouseleave" />
+      <UnitIcon
+        :unit
+        :alt
+        :full-width
+        @mouseenter="mouseenter"
+        @mouseleave="mouseleave" />
     </RouterLink>
     <div
       v-else
@@ -41,35 +46,32 @@
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import i18n from '../../locale'
-import { getUnit } from '../utils'
 import UnitIcon from './UnitIcon.vue'
 
 const props = defineProps<{
   unit: UnitDoc.Id
+  fullWidth?: boolean
 }>()
 
+const types = computed<UnitDoc.Types | undefined>(
+  () =>
+    Object.entries(__ESDNUnitDoc.source.Types).find(([_, v]) =>
+      v.includes(props.unit),
+    )?.[0] as UnitDoc.Types,
+)
+
 const path = computed(() => {
-  const res = getUnit(props.unit)
+  const parent = types.value?.replaceAll('Types', '')
+  if (!parent) return
 
-  let type = res?.type ?? '404'
-  type = type.endsWith('s') ? type.substring(0, type.length - 1) : type
-  type = type.endsWith('Type') ? type.substring(0, type.length - 4) : type
-
-  return (
-    __ESDNUnitDoc.options.baseUrl +
-    '/' +
-    type +
-    '/' +
-    props.unit
-  ).replaceAll('//', '/')
+  return `${__ESDNUnitDoc.options.baseUrl}${parent}/${props.unit}`
 })
 const alt = computed(() => {
-  return props.unit
-  // if (unitData.value?.genericPrerequisites) {
-  //   return i18n('genericPrerequisites', undefined, undefined, {
-  //     unit: props.unit,
-  //   })
-  // }
+  if (types.value === 'GenericPrerequisiteTypes') {
+    return i18n('GenericPrerequisites', undefined, undefined, {
+      unit: props.unit,
+    })
+  }
 })
 
 onMounted(() => {})
@@ -101,8 +103,3 @@ const mouseleave = (payload: MouseEvent) => {
   }
 }
 </style>
-
-<!-- <style lang="scss" scoped>
-.unit-detail {
-}
-</style> -->

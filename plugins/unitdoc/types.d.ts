@@ -14,39 +14,34 @@ declare namespace UnitDoc {
   /** Csf标签 */
   export type CsfLabel = string
 
-  export enum Type {
-    InfantryTypes = 'InfantryTypes',
-    VehicleTypes = 'VehicleTypes',
-    AircraftTypes = 'AircraftTypes',
-    BuildingTypes = 'BuildingTypes',
-    SuperWeaponTypes = 'SuperWeaponTypes',
-    Weapons = 'Weapons',
-    Warheads = 'Warheads',
-    Armors = 'Armors',
-  }
+  export type Types =
+    | 'InfantryTypes'
+    | 'VehicleTypes'
+    | 'AircraftTypes'
+    | 'BuildingTypes'
+    | 'SuperWeaponTypes'
+    | 'WeaponTypes'
+    | 'WarheadTypes'
+    | 'GenericPrerequisiteTypes'
+    | 'ArmorTypes'
 
   /** 单位文档数据 */
   export interface Source {
     Csf: Record<CsfLabel, string>
-    Units: {
-      [Type.InfantryTypes]: Record<Id, Unit>
-      [Type.VehicleTypes]: Record<Id, Unit>
-      [Type.AircraftTypes]: Record<Id, Unit>
-      [Type.BuildingTypes]: Record<Id, Unit>
-      [Type.SuperWeaponTypes]: Record<Id, Unit>
-    }
-    [Type.Weapons]: Record<Id, Weapon>
-    [Type.Warheads]: Record<Id, Warhead>
-    [Type.Armors]: Id[]
+    Types: Record<Types, Id[]>
+    Data: Record<Id, Unit | Warhead | Weapon | SuperWeapon>
+    GenericPrerequisites: Record<Id, Id[]>
   }
 
   export interface Unit {
     Hidden: boolean
     Cameo?: ImageFileName
     AltCameo?: ImageFileName
+
     UIName?: CsfLabel
     UIDescription?: CsfLabel
     Cost?: number
+    TechLevel?: number
     Power?: number
     Strength?: number
     Armor?: Id
@@ -59,7 +54,7 @@ declare namespace UnitDoc {
     EliteSecondary?: Id
     OpportunityFire?: boolean
     DetectDisguise?: boolean
-    BuildTimeMultiplier?: number
+    BuildTimeMultiplier?: double
     CrushLevel?: number
     OmniCrusher?: boolean
     BuildLimit?: number
@@ -78,9 +73,6 @@ declare namespace UnitDoc {
     Bunkerable?: boolean
     Trainable?: boolean
     Crushable?: boolean
-
-    IsPowered?: boolean
-    RechargeTime?: number
   }
 
   export interface Weapon {
@@ -88,7 +80,7 @@ declare namespace UnitDoc {
     ROF?: number
     Range?: number
     Burst?: number
-    Burst_Delays?: number
+    ['Burst.Delays']?: number
     Warhead?: Id
   }
 
@@ -97,5 +89,15 @@ declare namespace UnitDoc {
     AffectsAllies?: number
     AffectsEnemies?: number
     AffectsOwner?: number
+  }
+
+  export interface SuperWeapon {
+    SidebarImage?: ImageFileName
+
+    UIName?: CsfLabel
+    UIDescription?: CsfLabel
+    WeaponType?: Id
+    IsPowered?: boolean
+    RechargeTime?: number
   }
 }

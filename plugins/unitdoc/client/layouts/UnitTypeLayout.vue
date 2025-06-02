@@ -2,7 +2,7 @@
   <Layout>
     <template #contentAfter>
       <div class="unit-grid">
-        <UnitButton v-for="(id, i) in data" :unit="id" />
+        <UnitButton v-for="(id, i) in data" :unit="id" :key="i" />
       </div>
     </template>
   </Layout>
@@ -15,20 +15,13 @@ import { usePageFrontmatter } from 'vuepress/client'
 import UnitButton from '../components/UnitButton.vue'
 
 const frontmatter = usePageFrontmatter<{
-  type: UnitDoc.Type
+  type: UnitDoc.Types
 }>()
 
 const data = computed(() => {
   if (!frontmatter.value.type) return []
 
-  return Object.keys(
-    __ESDNUnitDoc.source.Units[
-      frontmatter.value.type as keyof typeof __ESDNUnitDoc.source.Units
-    ] ??
-      __ESDNUnitDoc.source[
-        frontmatter.value.type as keyof typeof __ESDNUnitDoc.source
-      ],
-  )
+  return __ESDNUnitDoc.source.Types[frontmatter.value.type]
 })
 </script>
 

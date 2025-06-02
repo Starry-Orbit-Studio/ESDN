@@ -18,8 +18,8 @@
     "Strength": "装甲强度",
     "Armor": "装甲",
     "Prerequisite": "生产前提",
-    "Weapons": "武器",
-    "EliteWeapons": "精英武器",
+    "Weapons": "武器 {i}",
+    "EliteWeapons": "精英武器 {i}",
     "Primary": "主要武器",
     "ElitePrimary": "精英主要武器",
     "Secondary": "次要武器",
@@ -52,14 +52,16 @@
     "ROF": "射速",
     "Range": "射程",
     "Burst": "连发数",
-    "Burst_Delays": "连发间隔",
+    "Burst.Delays": "连发间隔",
     "Warhead": "弹头",
 
     "DamageModifiers": "伤害修正",
     "CellSpread": "伤害单位",
     "AffectsAllies": "影响友军",
     "AffectsEnemies": "影响敌军",
-    "AffectsOwner": "影响自己"
+    "AffectsOwner": "影响自己",
+
+    "WeaponType": "武器"
   },
   "InfantryTypes": {
     "TypeName": "步兵",
@@ -84,16 +86,16 @@
   "SuperWeaponTypes": {
     "TypeName": "超级武器"
   },
-  "Weapons": {
+  "WeaponTypes": {
     "TypeName": "武器"
   },
-  "Warheads": {
+  "WarheadTypes": {
     "TypeName": "弹头"
   },
-  "Armors": {
+  "ArmorTypes": {
     "TypeName": "装甲"
   },
-  "GenericPrerequisitesTypes": {
+  "GenericPrerequisiteTypes": {
     "TypeName": "全局建造前提"
   }
 }

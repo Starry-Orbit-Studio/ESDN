@@ -29,13 +29,6 @@ const frontmatter = usePageFrontmatter<{
   type: string
   unitId: UnitDoc.Id
 }>()
-
-// const init1 = () => {
-//   const sidebar = useSidebarItems()
-//   sidebar.value[0] = __ESDNUnitDocSidebar
-// }
-// onBeforeMount(init1)
-// onBeforeUpdate(init1)
 </script>
 
 <style lang="scss">

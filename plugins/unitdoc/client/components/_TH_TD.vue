@@ -1,7 +1,7 @@
 <template>
   <th v-text="label" />
   <td v-if="button" :colspan="latest ? 255 : undefined">
-    <UnitButton :unit="value" />
+    <UnitButton :unit="value" full-width />
   </td>
   <td v-else v-text="value" :colspan="latest ? 255 : undefined" />
 </template>

@@ -11,7 +11,8 @@ const PageBuilder = {
     pageOptions.path = url
 
     pageOptions.frontmatter ??= {}
-    pageOptions.frontmatter.title ??= i18n('UnitDoc')
+    const title = i18n('UnitDoc')
+    if (title) pageOptions.frontmatter.title ??= title
     pageOptions.frontmatter.layout = 'UnitHomePageLayout'
 
     const page = await createPage(app, pageOptions)
@@ -19,7 +20,7 @@ const PageBuilder = {
   },
   IndexPage: async (
     app: App,
-    type: UnitDoc.Type,
+    type: UnitDoc.Types,
     url: string,
     pageOptions: PageOptions,
   ) => {
@@ -27,7 +28,8 @@ const PageBuilder = {
 
     pageOptions.frontmatter ??= {}
 
-    pageOptions.frontmatter.title ??= i18n('TypeName', type)
+    const title = i18n('TypeName', type)
+    if (title) pageOptions.frontmatter.title ??= title
     pageOptions.frontmatter.layout = 'UnitTypeLayout'
     pageOptions.frontmatter.type = type
 
@@ -36,9 +38,9 @@ const PageBuilder = {
   },
   UnitPage: async (
     app: App,
-    type: UnitDoc.Type,
+    type: UnitDoc.Types,
     unitId: UnitDoc.Id,
-    title: string,
+    title: string | undefined,
     url: string,
     pageOptions: PageOptions,
   ) => {
@@ -46,7 +48,7 @@ const PageBuilder = {
 
     pageOptions.frontmatter ??= {}
 
-    pageOptions.frontmatter.title ??= title
+    if (title) pageOptions.frontmatter.title ??= title
     pageOptions.frontmatter.layout = 'UnitLayout'
     pageOptions.frontmatter.type = type
     pageOptions.frontmatter.unitId = unitId
@@ -92,46 +94,28 @@ const plugin =
           getPageOptions(relativeBaseUrl),
         )
 
-        const types: Array<
-          | [UnitDoc.Type.InfantryTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
-          | [UnitDoc.Type.VehicleTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
-          | [UnitDoc.Type.AircraftTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
-          | [UnitDoc.Type.BuildingTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
-          | [UnitDoc.Type.SuperWeaponTypes, Record<UnitDoc.Id, UnitDoc.Unit>]
-          | [UnitDoc.Type.Weapons, Record<UnitDoc.Id, UnitDoc.Weapon>]
-          | [UnitDoc.Type.Warheads, Record<UnitDoc.Id, UnitDoc.Warhead>]
-        > = []
-        types.push(...(Object.entries(__ESDNUnitDoc.source.Units) as any))
-        types.push([
-          'Weapons' as UnitDoc.Type.Weapons,
-          __ESDNUnitDoc.source.Weapons,
-        ])
-        types.push([
-          'Warheads' as UnitDoc.Type.Warheads,
-          __ESDNUnitDoc.source.Warheads,
-        ])
-        // types.push([
-        //   'GenericPrerequisitesTypes',
-        //   __ESDNUnitDoc.source.GenericPrerequisites,
-        // ])
-
         await Promise.all(
-          types.map(async ([type, data]) => {
+          (
+            Object.entries(__ESDNUnitDoc.source.Types) as [
+              UnitDoc.Types,
+              UnitDoc.Id[],
+            ][]
+          ).map(async ([type, unitIdList]) => {
             const url = formatUrl(
-              `${relativeBaseUrl}/${type.replace('Types', '')}/`,
+              `${relativeBaseUrl}/${type.replaceAll('Types', '')}/`,
             )
             await PageBuilder.IndexPage(app, type, url, getPageOptions(url))
 
             await Promise.all(
-              Object.entries(data).map(async ([unitId, unit]) => {
+              unitIdList.map(async unitId => {
                 const unitUrl = formatUrl(`${url}${unitId}.html`)
+                const unit = __ESDNUnitDoc.source.Data[unitId]
+                if (!unit) return
 
                 const title =
                   'UIName' in unit && unit.UIName
                     ? __ESDNUnitDoc.source.Csf[unit.UIName]
                     : unitId
-
-                console.log(unitUrl)
 
                 await PageBuilder.UnitPage(
                   app,
@@ -145,53 +129,6 @@ const plugin =
             )
           }),
         )
-
-        // pages.push(
-        //   ...Object.entries(__ESDNUnitDoc.source.Units).flatMap(
-        //     ([type, data]) => {
-
-        //       pages.push(
-        //         ...Object.entries(data).map(([unitId, unit]) => {
-        //           const relativeUnitUrl =
-        //             `${relativeTypeUrl}/${unitId}`.replaceAll('//', '/')
-
-        //           const pageOptions =
-        //             (knownPages.find(
-        //               ({ path }) => path == relativeUnitUrl,
-        //             ) as PageOptions) ?? {}
-
-        //           pageOptions.path = relativeUnitUrl
-        //           pageOptions.frontmatter ??= {}
-        //           pageOptions.frontmatter = {
-        //             ...pageOptions.frontmatter,
-        //             title: unit.UIName && __ESDNUnitDoc.source.Csf[unit.UIName],
-        //             description:
-        //               unit.UIDescription &&
-        //               __ESDNUnitDoc.source.Csf[unit.UIDescription],
-        //             layout: 'UnitLayout',
-        //             sidebar: true,
-        //             index: false,
-        //             unitId,
-        //             unitType: unitType,
-        //           }
-
-        //           return pageOptions
-        //         }),
-        //       )
-
-        //       return pages
-        //     },
-        //   ),
-        // )
-
-        // return pages.map(async option => {
-        //   if (!option) return
-        //   const page = await createPage(app, {
-        //     ...option,
-        //   })
-        //   // 把它添加到 `app.pages`
-        //   app.pages.push(page)
-        // })
       },
     }
   }

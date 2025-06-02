@@ -4,7 +4,7 @@
       v-for="(item, index) in data"
       :key="index"
       v-bind="item"
-      :button="button"
+      :button
       :latest="index === data.length - 1" />
   </tr>
 </template>

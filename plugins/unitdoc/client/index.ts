@@ -1,6 +1,6 @@
 import { defineClientConfig } from 'vuepress/client'
 
-import UnitButton from './components/UnitButton.vue'
+import UnitButton from './components/PublicUnitButton.vue'
 import UnitHomePageLayout from './layouts/UnitHomePageLayout.vue'
 import UnitLayout from './layouts/UnitLayout.vue'
 import UnitTypeLayout from './layouts/UnitTypeLayout.vue'

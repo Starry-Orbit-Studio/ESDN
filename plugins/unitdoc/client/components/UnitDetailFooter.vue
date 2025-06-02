@@ -1,110 +1,86 @@
 <template>
   <div v-if="visible && unitData">
-    <h3 v-text="i18n('ExtraInfo', unitData.type, undefined)" id="extraInfo" />
+    <h3 v-text="i18n('ExtraInfo', types, undefined)" id="extraInfo" />
     <ul>
       <li
-        v-if="unitData?.data?.OpportunityFire"
-        v-text="
-          i18n('OpportunityFire', unitData.type, undefined, unitData.data)
-        " />
+        v-if="unitData?.OpportunityFire"
+        v-text="i18n('OpportunityFire', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.DetectDisguise"
-        v-text="
-          i18n('DetectDisguise', unitData.type, undefined, unitData.data)
-        " />
+        v-if="unitData?.DetectDisguise"
+        v-text="i18n('DetectDisguise', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.BuildTimeMultiplier"
+        v-if="unitData?.BuildTimeMultiplier"
         v-text="
-          i18n(
-            'BuildTimeMultiplier',
-            unitData.type,
-            undefined,
-            unitData,
-            data => (typeof data === 'number' ? `${data * 100}%` : `${data}`),
+          i18n('BuildTimeMultiplier', types, undefined, unitData, data =>
+            typeof data === 'number' ? `${data * 100}%` : `${data}`,
           )
         " />
       <li
-        v-if="unitData?.data?.CrushLevel"
-        v-text="i18n('CrushLevel', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.CrushLevel"
+        v-text="i18n('CrushLevel', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.OmniCrusher"
-        v-text="i18n('OmniCrusher', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.OmniCrusher"
+        v-text="i18n('OmniCrusher', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.BuildLimit"
-        v-text="i18n('BuildLimit', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.BuildLimit"
+        v-text="i18n('BuildLimit', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.Cloakable"
-        v-text="i18n('Cloakable', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.Cloakable"
+        v-text="i18n('Cloakable', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.Deployer"
-        v-text="i18n('Deployer', unitData.type, undefined, unitData.data)" />
-      <li v-if="unitData?.data?.DeploysInto">
+        v-if="unitData?.Deployer"
+        v-text="i18n('Deployer', types, undefined, unitData)" />
+      <li v-if="unitData?.DeploysInto">
         <div class="flex flex-row items-center">
           <span
             v-text="
-              i18n(
-                'DeploysInto',
-                unitData.type,
-                undefined,
-                unitData,
-                data => '',
-              )
+              i18n('DeploysInto', types, undefined, unitData, () => '')
             " />
-          <UnitButton :unit="unitData.data.DeploysInto" />
+          <UnitButton :unit="unitData.DeploysInto" />
         </div>
       </li>
       <li
-        v-if="unitData?.data?.Occupier"
-        v-text="i18n('Occupier', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.Occupier"
+        v-text="i18n('Occupier', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.SelfHealing"
-        v-text="i18n('SelfHealing', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.SelfHealing"
+        v-text="i18n('SelfHealing', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.ImmuneToEMP"
-        v-text="i18n('ImmuneToEMP', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.ImmuneToEMP"
+        v-text="i18n('ImmuneToEMP', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.ImmuneToVeins"
-        v-text="
-          i18n('ImmuneToVeins', unitData.type, undefined, unitData.data)
-        " />
+        v-if="unitData?.ImmuneToVeins"
+        v-text="i18n('ImmuneToVeins', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.ImmuneToPsionics"
-        v-text="
-          i18n('ImmuneToPsionics', unitData.type, undefined, unitData.data)
-        " />
+        v-if="unitData?.ImmuneToPsionics"
+        v-text="i18n('ImmuneToPsionics', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.ImmuneToRadiation"
-        v-text="
-          i18n('ImmuneToRadiation', unitData.type, undefined, unitData.data)
-        " />
+        v-if="unitData?.ImmuneToRadiation"
+        v-text="i18n('ImmuneToRadiation', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.ImmuneToPoison"
-        v-text="
-          i18n('ImmuneToPoison', unitData.type, undefined, unitData.data)
-        " />
+        v-if="unitData?.ImmuneToPoison"
+        v-text="i18n('ImmuneToPoison', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.Ammo"
-        v-text="i18n('Ammo', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.Ammo"
+        v-text="i18n('Ammo', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.RechargeTime"
-        v-text="
-          i18n('RechargeTime', unitData.type, undefined, unitData.data)
-        " />
+        v-if="unitData?.RechargeTime"
+        v-text="i18n('RechargeTime', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.Cloneable"
-        v-text="i18n('Cloneable', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.Cloneable"
+        v-text="i18n('Cloneable', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.Bunkerable"
-        v-text="i18n('Bunkerable', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.Bunkerable"
+        v-text="i18n('Bunkerable', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.Trainable"
-        v-text="i18n('Trainable', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.Trainable"
+        v-text="i18n('Trainable', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.Crushable"
-        v-text="i18n('Crushable', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.Crushable"
+        v-text="i18n('Crushable', types, undefined, unitData)" />
       <li
-        v-if="unitData?.data?.IsPowered"
-        v-text="i18n('IsPowered', unitData.type, undefined, unitData.data)" />
+        v-if="unitData?.IsPowered"
+        v-text="i18n('IsPowered', types, undefined, unitData)" />
     </ul>
   </div>
 </template>
@@ -112,46 +88,52 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import i18n from '../../locale'
-import { getUnit } from '../utils'
 import UnitButton from './UnitButton.vue'
 
 const props = defineProps<{
   unit: UnitDoc.Id
 }>()
 
+const types = computed<UnitDoc.Types | undefined>(
+  () =>
+    Object.entries(__ESDNUnitDoc.source.Types).find(([_, v]) =>
+      v.includes(props.unit),
+    )?.[0] as UnitDoc.Types,
+)
+
 const unitData = computed(
   () =>
-    getUnit(props.unit)! as {
-      type: UnitDoc.Type
-      data?: Partial<UnitDoc.Unit & UnitDoc.Weapon & UnitDoc.Warhead>
-    },
+    __ESDNUnitDoc.source.Data[props.unit] as UnitDoc.Unit &
+      UnitDoc.Weapon &
+      UnitDoc.Warhead &
+      UnitDoc.SuperWeapon,
 )
 
 const visible = computed(
   () =>
-    unitData.value?.data?.OpportunityFire ||
-    unitData.value?.data?.DetectDisguise ||
-    unitData.value?.data?.BuildTimeMultiplier ||
-    unitData.value?.data?.CrushLevel ||
-    unitData.value?.data?.OmniCrusher ||
-    unitData.value?.data?.BuildLimit ||
-    unitData.value?.data?.Cloakable ||
-    unitData.value?.data?.Deployer ||
-    unitData.value?.data?.DeploysInto ||
-    unitData.value?.data?.Occupier ||
-    unitData.value?.data?.SelfHealing ||
-    unitData.value?.data?.ImmuneToEMP ||
-    unitData.value?.data?.ImmuneToVeins ||
-    unitData.value?.data?.ImmuneToPsionics ||
-    unitData.value?.data?.ImmuneToRadiation ||
-    unitData.value?.data?.ImmuneToPoison ||
-    unitData.value?.data?.Ammo ||
-    unitData.value?.data?.RechargeTime ||
-    unitData.value?.data?.Cloneable ||
-    unitData.value?.data?.Bunkerable ||
-    unitData.value?.data?.Trainable ||
-    unitData.value?.data?.Crushable ||
-    unitData.value?.data?.IsPowered,
+    unitData.value?.OpportunityFire ||
+    unitData.value?.DetectDisguise ||
+    unitData.value?.BuildTimeMultiplier ||
+    unitData.value?.CrushLevel ||
+    unitData.value?.OmniCrusher ||
+    unitData.value?.BuildLimit ||
+    unitData.value?.Cloakable ||
+    unitData.value?.Deployer ||
+    unitData.value?.DeploysInto ||
+    unitData.value?.Occupier ||
+    unitData.value?.SelfHealing ||
+    unitData.value?.ImmuneToEMP ||
+    unitData.value?.ImmuneToVeins ||
+    unitData.value?.ImmuneToPsionics ||
+    unitData.value?.ImmuneToRadiation ||
+    unitData.value?.ImmuneToPoison ||
+    unitData.value?.Ammo ||
+    unitData.value?.RechargeTime ||
+    unitData.value?.Cloneable ||
+    unitData.value?.Bunkerable ||
+    unitData.value?.Trainable ||
+    unitData.value?.Crushable ||
+    unitData.value?.IsPowered,
 )
 </script>
 

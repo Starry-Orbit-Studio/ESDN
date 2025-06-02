@@ -7,7 +7,7 @@ const locales = {
 
 export default (
   key: keyof typeof locales.default.default,
-  type?: Exclude<keyof typeof locales.default, 'default'>,
+  type?: UnitDoc.Types,
   lang?: Exclude<keyof typeof locales, 'default'>,
   args?: object,
   formatter?: (data: any) => any,

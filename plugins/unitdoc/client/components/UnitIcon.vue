@@ -1,41 +1,45 @@
 <template>
-  <figure class="unit-icon">
+  <figure class="unit-icon" :class="{ ['full-width']: fullWidth }">
     <div
-      v-if="url"
+      v-if="icon"
       class="image"
-      :style="`--unit-icon-src: url('${img(url)}')`" />
+      :style="`--unit-icon-src: url('${img(icon)}')`" />
     <figcaption class="title" v-text="alt" />
   </figure>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getUnit } from '../utils'
-
 const props = defineProps<{
   unit: UnitDoc.Id
   elite?: boolean
   alt?: string
+  fullWidth?: boolean
 }>()
 
-const unitData = computed(() => getUnit(props.unit))
+const unitData = computed(() => __ESDNUnitDoc.source.Data[props.unit])
 
-const img = (name: UnitDoc.ImageFileName) =>
-  `${__ESDNUnitDoc.options.iconsBaseUrl}${name}`
+const icon = computed(() => {
+  if (!unitData.value) return
 
-const url = computed(() => {
-  const data = unitData.value?.data as UnitDoc.Unit
-  return props.elite ? data?.AltCameo : data?.Cameo
+  if (props.elite && 'AltCameo' in unitData.value)
+    return unitData.value.AltCameo
+  if ('Cameo' in unitData.value) return unitData.value.Cameo
+  if ('SidebarImage' in unitData.value) return unitData.value.SidebarImage
 })
 const alt = computed(() => {
   if (props.alt) return props.alt
-  const data = unitData.value?.data as UnitDoc.Unit
 
-  if (data?.UIName && __ESDNUnitDoc.source.Csf[data?.UIName])
-    return __ESDNUnitDoc.source.Csf[data?.UIName]
+  if ('UIName' in unitData.value && unitData.value.UIName)
+    return (
+      __ESDNUnitDoc.source.Csf[unitData.value.UIName] ?? unitData.value.UIName
+    )
 
   return props.unit
 })
+
+const img = (name: UnitDoc.ImageFileName) =>
+  `${__ESDNUnitDoc.options.iconsBaseUrl}${name}`
 </script>
 
 <style lang="scss">
@@ -44,6 +48,15 @@ figure.unit-icon {
   width: 60px;
   max-width: 60px;
   font-size: smaller;
+
+  &.full-width {
+    width: unset;
+    max-width: unset;
+    .title {
+      width: unset;
+      max-width: unset;
+    }
+  }
 
   .title {
     width: 60px;
