@@ -29,10 +29,12 @@ const types = computed<UnitDoc.Types | undefined>(
 const icon = computed(() => {
   if (!unitData.value) return
 
-  if (props.elite && 'AltCameo' in unitData.value)
+  if (props.elite && 'AltCameo' in unitData.value && unitData.value.AltCameo)
     return unitData.value.AltCameo
-  if ('Cameo' in unitData.value) return unitData.value.Cameo
-  if ('SidebarImage' in unitData.value) return unitData.value.SidebarImage
+  if ('Cameo' in unitData.value && unitData.value.Cameo)
+    return unitData.value.Cameo
+  if ('SidebarImage' in unitData.value && unitData.value.SidebarImage)
+    return unitData.value.SidebarImage
   if (
     [
       'InfantryTypes',
